@@ -70,7 +70,10 @@
           %div
             %figure
                 %div{:align => "center"}
-                  %p Form here
+                  %p Blahblahab la
+                  #individual_set
+                    %input.individual{:type => "text"}
+                  %button#add A&ntilde;adir blah
         %li
           %h2
             %span Resultado
@@ -78,5 +81,11 @@
             %figure
               %div{:align => "center"}
                 %p Res here
+                %input{:type => "radio", :name => "formula", :value => "simpson"} Simpson
+                %input{:type => "radio", :name => "formula", :value => "shannon_wiener"} Shannon-Wiener
+                %div
+                  %button#calculate Calcular
+                %img#loading{:src => "images/loading.gif"}
+                #result
   %noscript
     %p Habilite el JavaScript por favor
