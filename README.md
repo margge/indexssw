@@ -1,6 +1,8 @@
 Índices de Diversidad - Autoestudio PHP
 ---------------------------------------
 
+El código puede ser consultado en Github: https://github.com/Margge/indexssw
+
 ###Integrantes:
 
 * Diana Marcela Güiza Angulo ([@margge][1] | marcelaGuiza@gmail.com)
