@@ -1,35 +1,41 @@
 <?php
 require 'Slim/Slim.php';
 require 'views/HamlView.php';
+
 $app = new Slim(array(
     'view' => 'HamlView'
 ));
 
 $app->get('/', function() use ($app){
-    $app->render('show.haml', array('title' => 'Shakira'));
+    $app->render('index.haml');
 });
 
-//GET route
-$app->get('/hello/:name', function ($name) use ($app) {
-    $uri = $app->request()->getRootUri();
-    echo "Hello, $name. <form method='post' action='$uri/person'><input type='submit' value='Create person'/></form>";
-});
-
-//POST route
-$app->post('/person', function () {
-    return "Creating new person... wait ackerman(4,3) for me to finish.<br/>";
-    //$app = Slim::getInstance();
-    //$app->response()->body('More body content');
-});
-
-//PUT route
-$app->put('/person/:id', function ($id) {
-    //Update Person identified by $id
-});
-
-//DELETE route
-$app->delete('/person/:id', function ($id) {
-    //Delete Person identified by $id
+$app->post('/calculate', function() use ($app){             
+	// let's make sure we received the correct params
+	if($app->request()->post("individuals") === NULL){
+		die("No se enviaron individuos");
+	}                                                
+	
+	if($app->request()->post("formula") === NULL){
+		die("No se especific&oacute; la f&oacute;rmula");
+	}
+	
+	// separate the individuals (a comma-separated string)
+	$individuals = explode(",", $app->request()->post("individuals"));
+	
+	// get the formula calculator
+	$formula = $app->request()->post("formula");
+	if($formula == "simpson"){
+		require 'calc/simpson.php';
+		$calculator = new Simpson($individuals);
+	} else if($formula == "shannon_wiener") {
+		require 'calc/shannon_wiener.php';
+		$calculator = new ShannonWiener($individuals);
+	} else {
+		die("Formula desconocida ($formula)");
+	}
+	
+	echo $calculator->calc();
 });
 
 $app->run();
