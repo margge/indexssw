@@ -1,6 +1,13 @@
 <?php
 require 'Slim/Slim.php';
-$app = new Slim();
+require 'views/HamlView.php';
+$app = new Slim(array(
+    'view' => 'HamlView'
+));
+
+$app->get('/', function() use ($app){
+    $app->render('show.haml', array('title' => 'Shakira'));
+});
 
 //GET route
 $app->get('/hello/:name', function ($name) use ($app) {

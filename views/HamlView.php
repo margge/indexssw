@@ -49,7 +49,7 @@ class HamlView extends Slim_View {
 	/**
 	 * @var string The path to the directory containing the "HamlPHP" folder without trailing slash.
 	 */
-	public static $hamlDirectory = null;
+	public static $hamlDirectory = "views/";
 
 	/**
 	 * @var string The path to the templates folder WITH the trailing slash
@@ -59,7 +59,7 @@ class HamlView extends Slim_View {
 	/**
 	 * @var string The path to the templates folder WITH the trailing slash
 	 */
-	public static $hamlCacheDirectory = null;
+	public static $hamlCacheDirectory = '/tmp/';
 
 
 	/**
@@ -71,15 +71,15 @@ class HamlView extends Slim_View {
 	 * @return string
 	 */	
 	public function render( $template ) {
-        if ( !is_dir(self::$hamlDirectory) ) {
-            throw new RuntimeException('Cannot set the HamlPHP lib directory : ' . self::$hamlDirectory . '. Directory does not exist.');
-        }
+            if ( !is_dir(self::$hamlDirectory) ) {
+                throw new RuntimeException('Cannot set the HamlPHP lib directory : ' . self::$hamlDirectory . '. Directory does not exist.');
+            }
 
-		require_once self::$hamlDirectory . '/HamlPHP/HamlPHP.php';
-		require_once self::$hamlDirectory . '/HamlPHP/Storage/FileStorage.php';
+            require_once self::$hamlDirectory . '/HamlPHP/HamlPHP.php';
+            require_once self::$hamlDirectory . '/HamlPHP/Storage/FileStorage.php';
 
-		$parser = new HamlPHP(new FileStorage(self::$hamlCacheDirectory));
-		return $parser->parseFile(self::$hamlTemplatesDirectory.$template, $this->data);
+            $parser = new HamlPHP(new FileStorage(self::$hamlCacheDirectory));
+            return $parser->parseFile(self::$hamlTemplatesDirectory.$template, $this->data);
 	}
 }
 
