@@ -29,7 +29,7 @@
                     que el valor del &iacute;ndice aislado no permite conocer la importancia relativa de sus
                     componentes (riqueza y equitabilidad).
                     Algunos de los &iacute;ndices de diversidad m&aacute;s ampliamente utilizados son (1) el &iacute;ndice de
-                    Simpson (DSi ), y (2) el &iacute;ndice de Shannon-Wiener (H’)
+                    Simpson (DSi ), y (2) el &iacute;ndice de Shannon-Wiener (H')
         %li
           %h2
             %span &Iacute;ndice de Simpson
@@ -44,8 +44,8 @@
                     %p
                       Este fue el primer &iacute;ndice de diversidad usado en
                       ecolog&iacute;a. El &iacute;ndice de Simpson se deriva de la teor&iacute;a de probabilidades, y mide la
-                      probabilidad de encontrar dos individuos de la misma especie en dos ‘extracciones’
-                      sucesivas al azar sin ‘reposici&oacute;n’. En principio esto constituye una propiedad opuesta a la
+                      probabilidad de encontrar dos individuos de la misma especie en dos 'extracciones'
+                      sucesivas al azar sin 'reposici&oacute;n'. En principio esto constituye una propiedad opuesta a la
                       diversidad, se plantea entonces el problema de elegir una transformaci&oacute;n apropiada para
                       obtener una cifra correlacionada positivamente con la diversidad.
         %li
@@ -74,15 +74,14 @@
                    %h2
                      %span Ingresar datos 
                   %p 
-                    Pi = abundancia proporcional de la i&eacutesima especie; representa la probabilidad de 
-                    que un individuo de la especie i est&eacute presente en la muestra, siendo entonces la sumatoria de Pi
-                    igual a 1. 
+                    Pi = abundancia proporcional de la i&eacutesima especie.
                   %p
-                    Ahora ingrese el n&uacutemero de Pi que necesita para calcular el &iacutendice de diversidad. 
-                  #individual_set
-                    %input.individual{:type => "text"}
-                    %img{:src => "images/empty.png"}
-                  %button#add A&ntilde;adir Pi
+                    Ahora ingrese el n&uacutemero de Pi que necesita para calcular el &iacutendice de diversidad.
+                  .scrollable
+                    #individual_set
+                      %input.individual{:type => "text"}
+                      %img{:src => "images/empty.png"}
+                    %button#add A&ntilde;adir Pi
         %li
           %h2
             %span Resultado
