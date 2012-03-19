@@ -10,3 +10,5 @@ figcaption { padding: 10px 15px; position: absolute; bottom: 20px; right: 30px; 
 background: rgba(0,0,0,0.7); color: white;
 -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px }
 .center{align:"center"}
+#calculate{margin-top:20px;}
+#result{font-size: 50px;margin-top:40px;}
