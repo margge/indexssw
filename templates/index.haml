@@ -1,8 +1,82 @@
 !!! 5
 %html
-	%head
-		%title &Iacute;ndices de Diversidad
-		%script{:src => "js/base.js", :type => "text/javascript"}
-	%body
-		%p Hola mundo
-        
+  %head
+    %title &Iacute;ndices de Diversidad
+    %link{:href => "css/main.css", :rel => "stylesheet"}
+    %link{:href => "css/liteaccordion.css", :rel => "stylesheet"}
+    %script{:src => "js/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "js/jquery.easing.1.3.js", :type => "text/javascript"}
+    %script{:src => "js/liteaccordion.jquery.min.js", :type => "text/javascript"}
+    %script{:src => "js/base.js", :type => "text/javascript"}
+  %body
+    %h1 &Iacute;NDICES DE DIVERSIDAD
+    #ssw
+      %ol
+        %li
+          %h2
+            %span Introducci&oacute;n
+          %div
+            %figure
+                %div{:align => "center"}
+                  %li
+                    %h2
+                      %span Introducci&oacute;n
+                  %li
+                    En algunos casos un valor dado de un &iacute;ndice de diversidad puede
+                    provenir de distintas combinaciones de riqueza espec&iacute;fica y equitabilidad. Es decir, que el	
+                    mismo &iacute;ndice de diversidad puede obtenerse de una comunidad con baja riqueza y alta
+                    equitabilidad como de una comunidad con alta riqueza y baja equitabilidad. Esto significa
+                    que el valor del &iacute;ndice aislado no permite conocer la importancia relativa de sus
+                    componentes (riqueza y equitabilidad).
+                    Algunos de los &iacute;ndices de diversidad m&aacute;s ampliamente utilizados son (1) el &iacute;ndice de
+                    Simpson (DSi ), y (2) el &iacute;ndice de Shannon-Wiener (H’)
+        %li
+          %h2
+            %span &Iacute;ndice de Simpson
+          %div
+            %figure
+                %div{:align => "center"}
+                  %li
+                    %h2
+                      %span &Iacute;ndice de Simpson (1949), DSi
+                  %li
+                    %img{:src => "images/1.jpg", :align => "center"}
+                    %p
+                      Este fue el primer &iacute;ndice de diversidad usado en
+                      ecolog&iacute;a. El &iacute;ndice de Simpson se deriva de la teor&iacute;a de probabilidades, y mide la
+                      probabilidad de encontrar dos individuos de la misma especie en dos ‘extracciones’
+                      sucesivas al azar sin ‘reposici&oacute;n’. En principio esto constituye una propiedad opuesta a la
+                      diversidad, se plantea entonces el problema de elegir una transformaci&oacute;n apropiada para
+                      obtener una cifra correlacionada positivamente con la diversidad.
+        %li
+          %h2
+            %span &Iacute;ndice de Shannon-Wiener
+          %div
+            %figure
+                %div{:align => "center"}
+                  %li
+                    %h2
+                      %span &Iacute;ndice de Shannon-Wiener (Shannon y Weaver, 1949)
+                  %li
+                    %img{:src => "images/2.jpg", :align => "center"}
+                    %p
+                      Este &iacute;ndice se basa en la teor&iacute;a de la informaci&oacute;n (mide el contenido de
+                      informaci&oacute;n por s&iacute;mbolo de un mensaje compuesto por S clases de s&iacute;mbolos discretos
+                      cuyas probabilidades de ocurrencia son pi ...pS) y es probablemente el de empleo m&aacute;s
+                      frecuente en ecolog&iacute;a de comunidades.
+        %li
+          %h2
+            %span Elegir &iacute;ndice
+          %div
+            %figure
+                %div{:align => "center"}
+                  %p Form here
+        %li
+          %h2
+            %span Resultado
+          %div
+            %figure
+              %div{:align => "center"}
+                %p Res here
+  %noscript
+    %p Habilite el JavaScript por favor
