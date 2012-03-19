@@ -7,7 +7,7 @@ $app = new Slim(array(
 ));
 
 $app->get('/', function() use ($app){
-    $app->render('show.haml', array('title' => 'Shakira'));
+    $app->render('index.haml');
 });
 
 $app->post('/calculate', function() use ($app){             
