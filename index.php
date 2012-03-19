@@ -10,6 +10,10 @@ $app->get('/', function() use ($app){
     $app->render('index.haml');
 });
 
+$app->get('/temp', function() use ($app){
+    require_once "templates/index.html";
+});
+
 $app->post('/calculate', function() use ($app){             
 	// let's make sure we received the correct params
 	if($app->request()->post("individuals") === NULL){
