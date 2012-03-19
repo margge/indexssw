@@ -66,27 +66,37 @@
                       frecuente en ecolog&iacute;a de comunidades.
         %li
           %h2
-            %span Elegir &iacute;ndice
+            %span Ingresar datos
           %div
             %figure
                 %div{:align => "center"}
-                  %p Blahblahab la
+                  %li
+                   %h2
+                     %span Ingresar datos 
+                  %p 
+                    Pi = abundancia proporcional de la i&eacutesima especie; representa la probabilidad de 
+                    que un individuo de la especie i est&eacute presente en la muestra, siendo entonces la sumatoria de Pi
+                    igual a 1. 
+                  %p
+                    Ahora ingrese el n&uacutemero de Pi que necesita para calcular el &iacutendice de diversidad. 
                   #individual_set
                     %input.individual{:type => "text"}
                     %img{:src => "images/empty.png"}
-                  %button#add A&ntilde;adir blah
+                  %button#add A&ntilde;adir Pi
         %li
           %h2
             %span Resultado
           %div
             %figure
               %div{:align => "center"}
-                %p Res here
+                %li
+                  %h2
+                    %span Resultado &Iacutendice Diversidad
                 %input{:type => "radio", :name => "formula", :value => "simpson"} Simpson
                 %input{:type => "radio", :name => "formula", :value => "shannon_wiener"} Shannon-Wiener
                 %div
-                  %button#calculate Calcular
-                %img#loading{:src => "images/loading.gif"}
+                   %button#calculate Calcular
+                   %img#loading{:src => "images/loading.gif"}
                 #result
   %noscript
     %p Habilite el JavaScript por favor

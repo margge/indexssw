@@ -12,3 +12,5 @@ background: rgba(0,0,0,0.7); color: white;
 .error{  
     border:solid 2px #CC0000;  
 }
+#calculate{margin-top:20px;}
+#result{font-size: 50px;margin-top:40px;}
