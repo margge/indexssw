@@ -13,9 +13,30 @@ $(document).ready(function() {
         enumerateSlides : true
     }).find('figcaption:first').show();
 
+    function validatePi(){
+	    var cant = $('.individual').size();
+        var ok = 0;
+	    $('.individual').each(function(){
+		    var num = parseInt($(this).val());
+		    if(num === ~~num){
+			    ok++;
+			    $(this).removeClass("error"); 
+		    } else {
+			    $(this).addClass("error"); 
+			    return true;
+		    }
+		});
+		return ok >= cant;
+    }
+
     $('#add').click(function (){
         var cant = $('.individual').size();
-        var add = "<div id=\"container_"+cant+"\"><input class=\"individual\" type=\"text\" id=\"individual_"+cant+"\"></input> <button id=\"remove_"+cant+"\">remover</button></div>";
+        if(!validatePi()){
+			alert("Antes de agregar un nuevo Pi todos los compos deben tener datos");
+			return;
+		}
+        var add = "<div id=\"container_"+cant+"\"><input class=\"individual\" type=\"text\" id=\"individual_"+cant+"\"></input> "+
+                  "<img id=\"remove_"+cant+"\" src=\"images/rm.png\"/></div>";
         $('#individual_set').append(add);
         $("#remove_"+cant).click(function() {
             $('#container_'+cant).remove();
@@ -23,6 +44,11 @@ $(document).ready(function() {
     });
 
     $('#calculate').click(function(){
+	    if(!validatePi()){
+		    alert("Hay errores en los Pi");
+		    $("#ssw").liteAccordion('prev');
+		    return;
+		}
         $("#loading").show();
         var str = "";
         var comma = "";
