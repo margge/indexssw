@@ -8,62 +8,85 @@ define("MAX_SESSION_DURATION", 60 * 5);// five minutes
 $app = new Slim(array(
     'view' => 'HamlView'
 ));
-$app->hook('verify_session', function () use ($app) {
+
+$app->hook('verify_session', 'verify_session');
+function verify_session(){
+    $app = Slim::getInstance();
     if(isset($_SESSION['user_id'])){
         $user = ORM::for_table('users')->where('email', $_SESSION['user_id'])->find_one();
         if($user->last_time_seen + MAX_SESSION_DURATION < time()){
             $user->last_time_seen = 0;
             $user->save();
             session_destroy();
-            $app->redirect($app->request()->getRootUri());
+            $app->redirect($app->request()->getRootUri()."/");
         }
     }
-});
-$app->hook('update_session', function () {
+}
+
+$app->hook('update_session', 'update_session');
+function update_session(){
     if(isset($_SESSION['user_id'])){
         $user = ORM::for_table('users')->where('email', $_SESSION['user_id'])->find_one();
         $user->last_time_seen = time();
         $user->save();
     }
-});
-$app->applyHook('verify_session');
-$app->applyHook('update_session');
+}
 
-$app->get('/', function() use ($app){
+
+if($app->request()->getResourceUri() != "/login" || $app->request()->getResourceUri() != "/logout"){
+    $app->applyHook('verify_session');
+    $app->applyHook('update_session');
+}
+
+$app->get('/', 'root');
+function root(){
+    $app = Slim::getInstance();
     if(isset($_SESSION['user_id'])){
         $app->render('index.haml');
     }  else {
         $app->redirect($app->request()->getRootUri()."/login");
     }
-});
+}
 
-$app->get('/login', function() use ($app){
+$app->get('/login', 'login');
+function login(){
+    $app = Slim::getInstance();
     if(isset($_SESSION['user_id'])){
-        $app->redirect($app->request()->getRootUri());
+        $app->redirect($app->request()->getRootUri()."/");
     } else {
         $app->render('login.haml');
     }
-});
+}
 
-$app->get('/logout', function() use ($app){
-    $user = ORM::for_table('users')->where('email', $_SESSION['user_id'])->find_one();
-    $user->last_time_seen = 0;
-    $user->save();
+$app->get('/logout', 'logout');
+function logout(){
+    $app = Slim::getInstance();
+    if(isset($_SESSION['user_id'])){
+        $user = ORM::for_table('users')->where('email', $_SESSION['user_id'])->find_one();
+        $user->last_time_seen = 0;
+        $user->save();
+    }
     session_destroy();
-    $app->redirect($app->request()->getRootUri());
-});
+    $app->redirect($app->request()->getRootUri()."/");
+}
 
-$app->get('/my_history', function() use ($app){
+$app->get('/my_history', 'my_history');
+function my_history(){
+    $app = Slim::getInstance();
     $history = ORM::for_table('history')->where('user_id', $_SESSION['user_id'])->find_many();
     $app->render('history.haml', array('history' => $history));
-});
+}
 
-$app->get('/history', function() use ($app){
+$app->get('/history', 'history');
+function history(){
+    $app = Slim::getInstance();
     $history = ORM::for_table('history')->where_not_equal('user_id', $_SESSION['user_id'])->find_many();
     $app->render('history.haml', array('history' => $history, 'all' => true));
-});
+}
 
-$app->post('/login', function() use ($app){
+$app->post('/login', 'login_post');
+function login_post(){
+    $app = Slim::getInstance();
     $email = $app->request()->post("email");
     if(!$email){
         $app->flash('error', 'User email is required');
@@ -88,17 +111,21 @@ $app->post('/login', function() use ($app){
             $_SESSION['user_id'] = $user->email;
             $user->last_time_seen = time();
             $user->save();
-            $app->redirect($app->request()->getRootUri());
+            $app->redirect($app->request()->getRootUri()."/");
         }
     }
-});
+}
 
-$app->get('/register', function() use ($app){
+$app->get('/register', 'register');
+function register(){
+    $app = Slim::getInstance();
     $app->render('register.haml');
 
-});
+}
 
-$app->post('/register', function() use ($app){
+$app->post('/register', 'register_post');
+function register_post(){
+    $app = Slim::getInstance();
     $email = $app->request()->post("email");
     if(!$email){
         $app->flash('error', 'User email is required');
@@ -134,9 +161,11 @@ $app->post('/register', function() use ($app){
         $app->flash('error', 'Could not create user. Try again');
         $app->redirect($app->request()->getRootUri()."/register");
     }
-});
+}
 
-$app->post('/calculate', function() use ($app){
+$app->post('/calculate', 'calculate');
+function calculate(){
+    $app = Slim::getInstance();
     // let's make sure we received the correct params
     if($app->request()->post("individuals") === NULL){
         die("No se enviaron individuos");
@@ -183,6 +212,6 @@ $app->post('/calculate', function() use ($app){
         'params' => $individuals, 'result' => $result));
     $record->created_at = time();
     $record->save();
-});
+}
 
 $app->run();
