@@ -3,10 +3,31 @@ session_start();
 require 'Slim/Slim.php';
 require 'views/HamlView.php';
 require 'db/db_config.php';
+define("MAX_SESSION_DURATION", 60 * 5);// five minutes
 
 $app = new Slim(array(
     'view' => 'HamlView'
 ));
+$app->hook('verify_session', function () use ($app) {
+    if(isset($_SESSION['user_id'])){
+        $user = ORM::for_table('users')->where('email', $_SESSION['user_id'])->find_one();
+        if($user->last_time_seen + MAX_SESSION_DURATION < time()){
+            $user->last_time_seen = 0;
+            $user->save();
+            session_destroy();
+            $app->redirect($app->request()->getRootUri());
+        }
+    }
+});
+$app->hook('update_session', function () {
+    if(isset($_SESSION['user_id'])){
+        $user = ORM::for_table('users')->where('email', $_SESSION['user_id'])->find_one();
+        $user->last_time_seen = time();
+        $user->save();
+    }
+});
+$app->applyHook('verify_session');
+$app->applyHook('update_session');
 
 $app->get('/', function() use ($app){
     if(isset($_SESSION['user_id'])){
@@ -46,7 +67,7 @@ $app->post('/login', function() use ($app){
         $app->flash('error', 'User does not exist or password is incorrect');
         $app->redirect($app->request()->getRootUri());
     }  else {
-        if($user->last_time_seen + (1000 * 60 * 5 ) > time()){
+        if($user->last_time_seen + MAX_SESSION_DURATION > time()){
             // user is still logged in
             $app->flash('error', 'You have another session started; sorry dude.');
             $app->redirect($app->request()->getRootUri()."/login");
