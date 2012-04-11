@@ -14,27 +14,39 @@ $(document).ready(function() {
     }).find('figcaption:first').show();
 
     function validatePi(){
-	    var cant = $('.individual').size();
+        var cant = $('.individual').size();
         var ok = 0;
-	    $('.individual').each(function(){
-		    var num = parseInt($(this).val());
-		    if(num === ~~num){
-			    ok++;
-			    $(this).removeClass("error"); 
-		    } else {
-			    $(this).addClass("error"); 
-			    return true;
-		    }
-		});
-		return ok >= cant;
+        $('.individual').each(function(){
+            var num = parseInt($(this).val());
+            if(num === ~~num){
+                ok++;
+                $(this).removeClass("error"); 
+            } else {
+                $(this).addClass("error"); 
+                return true;
+            }
+        });
+        return ok >= cant;
+    }
+    
+    function refreshMyHistory(){
+        $.get('my_history', function(data) {
+            $('#my_history').html(data);
+        });
+    }
+
+    function refreshGlobalHistory(){
+        $.get('history', function(data) {
+            $('#history').html(data);
+        });
     }
 
     $('#add').click(function (){
         var cant = $('.individual').size();
         if(!validatePi()){
-			alert("Antes de agregar un nuevo Pi todos los compos deben tener datos");
-			return;
-		}
+            alert("Antes de agregar un nuevo Pi todos los compos deben tener datos");
+            return;
+        }
         var add = "<div id=\"container_"+cant+"\"><input class=\"individual\" type=\"text\" id=\"individual_"+cant+"\"></input> "+
                   "<img id=\"remove_"+cant+"\" src=\"images/rm.png\"/></div>";
         $('#individual_set').append(add);
@@ -44,11 +56,11 @@ $(document).ready(function() {
     });
 
     $('#calculate').click(function(){
-	    if(!validatePi()){
-		    alert("Hay errores en los Pi");
-		    $("#ssw").liteAccordion('prev');
-		    return;
-		}
+        if(!validatePi()){
+            alert("Hay errores en los Pi");
+            $("#ssw").liteAccordion('prev');
+            return;
+        }
         $("#loading").show();
         var str = "";
         var comma = "";
@@ -60,8 +72,15 @@ $(document).ready(function() {
         $.post('calculate', {individuals: str, formula: formula}, function(data) {
             $('#result').html(data);
             $("#loading").hide();
+            refreshMyHistory();
         });
+    });
+    
+    $('#refresh_history').click(function(){
+        refreshGlobalHistory();
     });
 
     $("#loading").hide();
+    refreshMyHistory();
+    refreshGlobalHistory();
 });

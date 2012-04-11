@@ -1,0 +1,22 @@
+!!! 5
+%html
+  %head
+    %title &Iacute;ndices de Diversidad - Login
+    %link{:href => "css/main.css", :rel => "stylesheet"}
+  %body
+    %h1 Debe iniciar sesi&oacute;n
+    -if (isset($_SESSION['flash']['error']))
+      .error
+        = $_SESSION['flash']['error']
+    -if (isset($_SESSION['flash']['info']))
+      .info
+        = $_SESSION['flash']['info']
+    %form{:method => "post", :action => "login"}
+      .field
+        %label{:for => "email"} Usuario:
+        %input{:id => "email", :name => "email"}
+      .field
+        %label{:for => "password"} Password:
+        %input{:id => "password", :name => "password", :type => "password"}
+      %input{:type => "submit"}
+    %a{:href => "register"} Register new user
