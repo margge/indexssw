@@ -40,32 +40,45 @@ $app->get('/', function() use ($app){
 $app->get('/login', function() use ($app){
     if(isset($_SESSION['user_id'])){
         $app->redirect($app->request()->getRootUri());
-    }  else {
+    } else {
         $app->render('login.haml');
     }
 });
 
 $app->get('/logout', function() use ($app){
+    $user = ORM::for_table('users')->where('email', $_SESSION['user_id'])->find_one();
+    $user->last_time_seen = 0;
+    $user->save();
     session_destroy();
     $app->redirect($app->request()->getRootUri());
+});
+
+$app->get('/my_history', function() use ($app){
+    $history = ORM::for_table('history')->where('user_id', $_SESSION['user_id'])->find_many();
+    $app->render('history.haml', array('history' => $history));
+});
+
+$app->get('/history', function() use ($app){
+    $history = ORM::for_table('history')->where_not_equal('user_id', $_SESSION['user_id'])->find_many();
+    $app->render('history.haml', array('history' => $history, 'all' => true));
 });
 
 $app->post('/login', function() use ($app){
     $email = $app->request()->post("email");
     if(!$email){
         $app->flash('error', 'User email is required');
-        $app->redirect($app->request()->getRootUri());
+        $app->redirect($app->request()->getRootUri()."/login");
     }
     $password = $app->request()->post("password");
     if(!$password){
         $app->flash('error', 'Password is required');
-        $app->redirect($app->request()->getRootUri());
+        $app->redirect($app->request()->getRootUri()."/login");
     }
     $user = ORM::for_table('users')->where('email', $email, 'password',
             sha1($password))->find_one();
     if(!$user){
         $app->flash('error', 'User does not exist or password is incorrect');
-        $app->redirect($app->request()->getRootUri());
+        $app->redirect($app->request()->getRootUri()."/login");
     }  else {
         if($user->last_time_seen + MAX_SESSION_DURATION > time()){
             // user is still logged in
@@ -148,7 +161,28 @@ $app->post('/calculate', function() use ($app){
         die("Formula desconocida ($formula)");
     }
 
-    echo $calculator->calc();
+    $result = $calculator->calc();
+    echo $result;
+    
+    // register in the history...
+    // let's first see if there is room for a history entry
+    $history_size = ORM::for_table('history')->where('user_id',
+            $_SESSION['user_id'])->count();
+    while($history_size >= 5){
+        // remove latest history
+        $latest_record = ORM::for_table('history')->where('user_id',
+            $_SESSION['user_id'])->order_by_asc('created_at')->find_one();
+        $latest_record->delete();
+        $history_size = ORM::for_table('history')->where('user_id',
+            $_SESSION['user_id'])->count();
+    }
+    // let's save this new record
+    $record = ORM::for_table('history')->create();
+    $record->user_id = $_SESSION['user_id'];
+    $record->payload = serialize(array('method' => $formula,
+        'params' => $individuals, 'result' => $result));
+    $record->created_at = time();
+    $record->save();
 });
 
 $app->run();

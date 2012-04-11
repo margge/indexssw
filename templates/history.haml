@@ -1,0 +1,20 @@
+%table
+  %tr
+    -if (isset($all) && $all)
+      %th Usuario
+    %th M&eacute;todo
+    %th Par&aacute;metros
+    %th Resultado
+    %th Fecha
+  -foreach ($history as $record)
+    -$data = unserialize($record->payload)
+    %tr
+      -if (isset($all) && $all)
+        %td= $record->user_id
+      -if ($data['method'] == "simpson")
+        %td Simpson
+      -else
+        %td Shannon Wiener
+      %td= implode(", ", $data['params'])
+      %td= $data['result']
+      %td= date("d F, h:i:s", $record->created_at)
