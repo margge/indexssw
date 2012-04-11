@@ -97,5 +97,26 @@
                    %button#calculate Calcular
                    %img#loading{:src => "images/loading.gif"}
                 #result
+        %li
+          %h2
+            %span Mi historial
+          %div
+            %figure
+                %div{:align => "center"}
+                  #my_history
+        %li
+          %h2
+            %span Historial global
+          %div
+            %figure
+              .scrollable_big
+                %div{:align => "center"}
+                  %li
+                    %h2
+                      %span Historial global
+                  %li
+                    #history
+                  %li
+                    %button{:id => "refresh_history"} Actualizar
   %noscript
     %p Habilite el JavaScript por favor
